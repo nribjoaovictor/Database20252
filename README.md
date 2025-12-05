@@ -40,8 +40,7 @@ Empresa → Solicitação → Coleta → Autorização
 ## 🚀 Como Rodar o Projeto
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/SEU-USUARIO/ecosystem.git
-cd ecosystem
+git clone git@github.com:nribjoaovictor/Database20252.git
 ```
 
 ### 2. Ambiente virtual

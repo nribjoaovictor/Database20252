@@ -58,7 +58,7 @@ pip install -r requirements.txt
 ```
 
 ### 4. Configurar banco
-Editar `settings.py` com as credenciais do PostgreSQL.
+Editar `settings.py` com as credenciais do PostgreSQL. (já deixei com o arquivo env aqui no projeto - o que é errado por conta da segurança. Mas como é um projeto curto, já subi o arquivo com a senha e a conexão.)
 
 ### 5. Iniciar servidor
 ```bash

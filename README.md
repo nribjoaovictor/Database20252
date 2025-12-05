@@ -1,105 +1,69 @@
-🌿 EcoSystem - Sistema de Gestão de Coletas
+# 🌿 EcoSystem — Sistema de Gestão de Coletas
+O **EcoSystem** é uma plataforma web desenvolvida para modernizar o processo de solicitações e gerenciamento de coletas de resíduos. A solução integra uma interface web moderna a um banco de dados corporativo **já existente**, permitindo que empresas registrem e acompanhem pedidos de coleta com agilidade e segurança.
 
-O EcoSystem é uma plataforma web desenvolvida para modernizar a gestão de solicitações de coleta de resíduos. O sistema conecta uma interface web moderna a um banco de dados corporativo pré-existente, permitindo que empresas abram e gerenciem chamados de forma ágil e segura.
+## 🛠 Tecnologias Utilizadas
+| Tecnologia | Descrição |
+|----------|-----------|
+| **Python 3.11+** | Linguagem principal |
+| **Django 5.x** | Framework backend (Arquitetura MVT) |
+| **PostgreSQL** | Banco de dados utilizado |
+| **HTML5, CSS3, Bootstrap 5** | Interface responsiva |
+| **Git & GitHub** | Versionamento do projeto |
 
-🛠️ Tecnologias Utilizadas
+## 🏛 Banco de Dados e Modelagem
+O diferencial do projeto é a **integração direta com um banco legado**. Ao invés de criar uma nova base, o sistema foi desenvolvido para **consumir o banco já existente**, preservando dados históricos e garantindo compatibilidade com outros sistemas internos.
 
-O projeto foi construído utilizando uma stack robusta para garantir integridade de dados e uma boa experiência de usuário:
+### 🔹 Importação e Mapeamento dos Models
+- Models foram criados espelhando fielmente as tabelas do PostgreSQL.
+- Estrutura e nomes originais foram preservados.
+- Não houve necessidade de migração ou alteração do banco físico.
+- O sistema consegue ler e gravar informações sem interromper aplicações externas.
 
-Linguagem: Python 3.11+
+### 🔹 Relacionamento entre Entidades
+**Autenticação e Perfil**
+- `Usuario` contém credenciais de login.
+- `Empresa` e `Funcionario` possuem relacionamento com `Usuario`.
+- Durante o login o sistema identifica o tipo de usuário e define permissões.
 
-Back-end Framework: Django 5.x (MVT Architecture)
+**Fluxo de Solicitação**
+Empresa → Solicitação → Coleta → Autorização
 
-Banco de Dados: PostgreSQL
+- Cada solicitação pertence exclusivamente à empresa logada.
+- Uma empresa **não visualiza solicitações de outra empresa**.
+- Integridade garantida por relações em cascata.
 
-Front-end: HTML5, CSS3, Bootstrap 5 (Design Responsivo)
+## ⚙ Funcionalidades Principais
+- **Abertura de Solicitação:** descrição e tipo do resíduo informados pelo usuário.
+- **Monitoramento:** listagem com status (Aberto / Em andamento / Concluído).
+- **Segurança na Exclusão:** solicitações com coletas vinculadas **não podem ser excluídas**.
 
-Controle de Versão: Git & GitHub
-
-🏛️ Banco de Dados e Modelagem
-
-O diferencial deste projeto é a integração com uma estrutura de dados legada. O desenvolvimento não partiu de um banco vazio, mas sim da necessidade de conectar uma aplicação nova a tabelas que já continham histórico e regras de negócio.
-
-1. Importação e Mapeamento dos Models
-
-A camada de dados (Models) do sistema foi construída através do mapeamento direto das tabelas existentes no PostgreSQL.
-
-O sistema espelha a estrutura exata do banco de dados original (nomes de tabelas e colunas).
-
-Isso permite que a aplicação leia e grave dados sem a necessidade de migração de dados ou alteração na estrutura física das tabelas principais, garantindo que outros sistemas que usam o mesmo banco continuem funcionando.
-
-2. Relacionamento entre Entidades
-
-A lógica de negócio do sistema depende estritamente das Chaves Estrangeiras (Foreign Keys) definidas no banco:
-
-Autenticação e Perfil:
-
-A tabela Usuario contém as credenciais de acesso.
-
-A tabela Empresa possui uma chave estrangeira apontando para Usuario.
-
-A tabela Funcionario também aponta para Usuario.
-
-No Login: O sistema verifica se o ID do usuário autenticado existe na tabela de Empresas ou de Funcionários para definir as permissões de acesso.
-
-Fluxo de Solicitação:
-
-Empresa -> Solicitação: Cada registro na tabela Solicitacoleta é vinculado obrigatoriamente ao ID da Empresa logada na sessão. Isso garante o isolamento dos dados (uma empresa não vê os chamados da outra).
-
-Integridade em Cascata: O sistema respeita a cadeia de dependência: Solicitacoleta -> gera Coleta -> gera Autorizacao.
-
-⚙️ Funcionalidades do Sistema
-
-O módulo principal foca no Ciclo de Vida da Solicitação de Coleta:
-
-Abertura de Chamado:
-
-Interface simplificada onde a empresa informa apenas a descrição e o tipo de resíduo.
-
-O sistema preenche automaticamente a data e vincula o cliente.
-
-Monitoramento (Listagem):
-
-Visualização clara dos chamados com indicadores visuais de status (Aberto, Em Andamento, Concluído).
-
-Segurança na Exclusão (Regras de Negócio):
-
-O sistema impede a exclusão de solicitações que já avançaram no fluxo de trabalho.
-
-Se uma solicitação já possui registros filhos (como uma coleta agendada), o sistema intercepta o erro de integridade do banco e avisa o usuário que a exclusão não é permitida, preservando o histórico.
-
-🚀 Como Rodar o Projeto
-
-Siga os passos abaixo para executar o ambiente de desenvolvimento:
-
-Clone o repositório:
-
-git clone [https://github.com/SEU-USUARIO/ecosystem.git](https://github.com/SEU-USUARIO/ecosystem.git)
+## 🚀 Como Rodar o Projeto
+### 1. Clonar o repositório
+```bash
+git clone https://github.com/SEU-USUARIO/ecosystem.git
 cd ecosystem
+```
 
-
-Crie e ative o ambiente virtual:
-
+### 2. Ambiente virtual
+```bash
 python -m venv venv
-
-# Windows:
+# Windows
 .\venv\Scripts\activate
-
-# Linux/Mac:
+# Linux/Mac
 source venv/bin/activate
+```
 
-
-Instale as dependências:
-
+### 3. Instalar dependências
+```bash
 pip install -r requirements.txt
+```
 
+### 4. Configurar banco
+Editar `settings.py` com as credenciais do PostgreSQL.
 
-Configure o Banco de Dados:
-Certifique-se de que o PostgreSQL está rodando e configure as credenciais no arquivo settings.py.
-
-Execute o servidor:
-
+### 5. Iniciar servidor
+```bash
 python manage.py runserver
+```
 
-
-Acesse em seu navegador: http://127.0.0.1:8000/
+Acesse: **http://127.0.0.1:8000/**

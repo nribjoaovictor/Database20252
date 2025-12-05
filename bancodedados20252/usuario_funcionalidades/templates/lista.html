@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-white fw-bold">Meus Chamados</h2>
+    
+    <a href="{% url 'criar_chamado' %}" class="btn btn-primary-neon">
+        <i class="fa-solid fa-plus me-2"></i>Nova Solicitação
+    </a>
+</div>
+
+<div class="glass-card overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0" style="color: #e2e8f0;">
+            <thead style="background: rgba(0,0,0,0.3); color: var(--primary-neon);">
+                <tr>
+                    <th class="ps-4 py-3 border-bottom border-secondary">#ID</th>
+                    <th class="py-3 border-bottom border-secondary">Data Abertura</th>
+                    <th class="py-3 border-bottom border-secondary">Status</th>
+                    <th class="py-3 border-bottom border-secondary">Tipo Resíduo</th>
+                    <th class="py-3 border-bottom border-secondary">Descrição</th>
+                    <th class="text-end pe-4 py-3 border-bottom border-secondary">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in chamados %}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td class="ps-4 py-3 fw-bold">#{{ c.id }}</td>
+                    <td class="py-3">{{ c.data_abertura|date:"d/m/Y" }}</td>
+                    <td class="py-3">
+                        {% if c.status == 'Aberto' %}
+                            <span class="badge bg-primary bg-opacity-25 text-primary border border-primary">Aberto</span>
+                        {% else %}
+                            <span class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary">Fechado</span>
+                        {% endif %}
+                    </td>
+                    <td class="py-3">{{ c.get_tipagem_residuo_display }}</td>
+                    <td class="py-3 text-truncate" style="max-width: 200px;">
+                        {{ c.descricao }}
+                    </td>
+                    <td class="text-end pe-4 py-3">
+                        <a href="{% url 'editar_chamado' c.id %}" class="btn btn-sm btn-outline-info me-1" title="Editar">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
+
+                        {% if c.status == 'Aberto' %}
+                            <a href="{% url 'excluir_chamado' c.id %}" class="btn btn-sm btn-outline-danger" title="Excluir">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        {% else %}
+                            <button class="btn btn-sm btn-outline-secondary" disabled title="Bloqueado">
+                                <i class="fa-solid fa-lock"></i>
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center py-5">
+                        <div class="text-muted mb-2"><i class="fa-regular fa-folder-open fa-2x"></i></div>
+                        <p class="text-muted">Nenhuma solicitação encontrada.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: white;
+    }
+</style>
+{% endblock %}

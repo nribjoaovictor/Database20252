@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="glass-card text-center p-4">
+            <div class="card-body">
+                <div class="mb-4">
+                    <div class="d-inline-flex rounded-circle p-3 mb-3" style="background: rgba(234, 179, 8, 0.2);">
+                        <i class="fa-solid fa-triangle-exclamation fa-2x text-warning"></i>
+                    </div>
+                    <h3 class="fw-bold text-white">Tem certeza?</h3>
+                    <p style="color: var(--text-muted);">
+                        Você está prestes a excluir o chamado <strong>#{{ chamado.id }}</strong>.<br>
+                        Esta ação não pode ser desfeita.
+                    </p>
+                </div>
+
+                <div class="p-3 rounded mb-4 text-start" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05);">
+                    <small class="text-uppercase fw-bold" style="color: var(--primary-neon); font-size: 0.75rem;">Descrição:</small>
+                    <div class="text-white mt-1">{{ chamado.descricao|default:"Sem descrição" }}</div>
+                </div>
+                
+                <form method="post" class="d-flex gap-2 justify-content-center">
+                    {% csrf_token %}
+                    <a href="{% url 'listar_chamados' %}" class="btn btn-outline-light w-50 rounded-3">Cancelar</a>
+                    <button type="submit" class="btn btn-danger w-50 rounded-3">
+                        Sim, Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSystem Corporate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-neon: #10b981;
+            --primary-hover: #059669;
+            --glass-bg: rgba(30, 41, 59, 0.7); /* Um pouco mais opaco que o login para leitura */
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Fundo escuro com gradiente igual ao login */
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 2rem;
+        }
+
+        /* --- Estilo Glassmorphism Global --- */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Navbar Transparente */
+        .navbar {
+            background: rgba(15, 23, 42, 0.8) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            font-weight: 600;
+            color: white !important;
+            font-size: 1.5rem;
+        }
+        .navbar-brand i { color: var(--primary-neon); }
+        
+        /* Badge do Usuário */
+        .nav-user-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--primary-neon);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* --- Sobrescrevendo Bootstrap Inputs para Dark Mode --- */
+        .form-control, .form-select {
+            background-color: var(--input-bg) !important;
+            border: 1px solid var(--glass-border) !important;
+            color: white !important;
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            border-color: var(--primary-neon) !important;
+        }
+        /* Placeholder cor clara */
+        ::placeholder { color: #64748b !important; opacity: 1; }
+
+        /* Botões */
+        .btn-primary-neon {
+            background-color: var(--primary-neon);
+            color: white;
+            border: none;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 10px 20px;
+            transition: 0.3s;
+        }
+        .btn-primary-neon:hover {
+            background-color: var(--primary-hover);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Alerts */
+        .alert-floating {
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark mb-5">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'listar_chamados' %}">
+                <i class="fa-solid fa-leaf me-2"></i>EcoSystem
+            </a>
+            
+            <div class="d-flex align-items-center gap-3">
+                <span class="nav-user-badge">
+                    <i class="fa-regular fa-user me-1"></i> Olá, Empresa
+                </span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm rounded-pill px-3">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-floating alert-dismissible fade show border-start border-5 border-{{ message.tags }}" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-circle-info me-2 text-{{ message.tags }}"></i>
+                        <strong>{{ message }}</strong>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
